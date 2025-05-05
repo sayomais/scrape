@@ -11,7 +11,7 @@ api_id = 22092598
 api_hash = "93de73c78293c85fd6feddb92f91b81a"
 session_name = "cc_scraper"
 
-group_ids = [-1002410570317, -1001878543352, -1001894182976]
+group_ids = [-1002410570317]
 channel_id = -1002046472570
 
 client = TelegramClient(session_name, api_id, api_hash)
