@@ -20,7 +20,7 @@ proxy_emojis = ["☁️", "⚡", "✨", "☀️", "🌧️", "❄️"]
 
 cc_pattern = re.compile(r'(\d{13,16})\D+(\d{1,2})\D+(\d{2,4})\D+(\d{3,4})')
 API_URL = "https://barryxapi.xyz/stripe_auth"
-API_KEY = "BRY-FGKD5-MDYRI-56HDM"
+API_KEY = "BRY-HEIQ7-KPWYR-DRU67"
 
 def format_cc(match):
     cc, mm, yy, cvv = match.groups()
