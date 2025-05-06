@@ -11,7 +11,7 @@ api_hash = "93de73c78293c85fd6feddb92f91b81a"
 session_name = "cc_scraper"
 
 group_ids = [-1002410570317, -1001878543352, -1001894182976]
-channel_id = -1002046472570
+channel_id = -1002404197649
 
 client = TelegramClient(session_name, api_id, api_hash)
 
@@ -110,7 +110,7 @@ async def fast_scraper(event):
 [ϟ] 𝗜𝘀𝘀𝘂𝗲𝗿 : <code>{bin_info['bank']}</code>
 [ϟ] 𝗧𝘆𝗽𝗲 : <code>{bin_info['type']}</code>
 ━━━━━━━━━━━━━
-[ϟ] T/t : {t}s | Proxy : None {emoji}
+[ϟ] T/t : {t}s | Proxy : Live {emoji}
 [ϟ] 𝗦𝗰𝗿𝗮𝗽𝗽𝗲𝗱 𝗕𝘆 : <a href="https://t.me/BarryxScrapper">𝗕𝗮𝗿𝗿𝘆</a>
 """
                 await client.send_message(channel_id, message, parse_mode="HTML")
